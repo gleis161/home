@@ -17,11 +17,13 @@ for encrypted_file in content/*.gpg; do
         # Remove .gpg extension to get original filename
         original_file="${encrypted_file%.gpg}"
         echo "Decrypting $encrypted_file to $original_file..."
+        temp_file="tempfile.tmp"
         
-        gpg --batch --yes --passphrase "$PASSPHRASE" --decrypt "$encrypted_file" > "$original_file"
+        gpg --batch --yes --passphrase "$PASSPHRASE" --decrypt "$encrypted_file" > "$temp_file"
         
         if [ $? -eq 0 ]; then
             echo "Successfully decrypted $original_file"
+            echo "$temp_file" > "$original_file"
         else
             echo "Failed to decrypt $encrypted_file"
             # exit 1
