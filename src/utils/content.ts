@@ -18,7 +18,7 @@ export interface DonationsData {
 export function parseMainContent(rawContent: string): ContentData {
   try {
     const lines = rawContent.split("\n").filter((line) => line.trim() !== "");
-    const heading = lines[0]?.replace("# ", "") || "Error";
+    const heading = lines[0]?.replace("# ", "") || "Content could not be parsed, do you know the passphrase?";
     const ending = lines[lines.length - 1]?.replace("# ", "") || "";
     const content = lines.slice(1, -1).join("\n").trim();
     
@@ -36,7 +36,7 @@ export function parseMainContent(rawContent: string): ContentData {
 export function parseDonationsContent(rawContent: string): DonationsData {
   try {
     const lines = rawContent.split("\n").filter((line) => line.trim() !== "");
-    const title = lines[0]?.replace("# ", "") || "Error";
+    const title = lines[0]?.replace("# ", "") || "Content could not be parsed, do you know the passphrase?";
     const items = lines.slice(1).map((line) => {
       const [org, ...descParts] = line.split(": ");
       return {
