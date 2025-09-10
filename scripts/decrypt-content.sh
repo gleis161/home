@@ -23,7 +23,7 @@ for encrypted_file in content/*.gpg; do
         
         if [ $? -eq 0 ]; then
             echo "Successfully decrypted $original_file"
-            echo "$temp_file" > "$original_file"
+            cat $temp_file > "$original_file"
         else
             echo "Failed to decrypt $encrypted_file"
             # exit 1
