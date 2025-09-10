@@ -5,8 +5,8 @@ on:
     branches: [ main ]
   workflow_dispatch:
   schedule:
-    - cron: "30 15 * * 3,4,5"  # 15:30 UTC (17:30 UTC+2)
-    - cron: "45 14 * * 3,4,5"  # 14:45 UTC (16:45 UTC+2)
+    # - cron: "30 15 * * 3,4,5"  # 15:30 UTC (17:30 UTC+2)
+    # - cron: "45 14 * * 3,4,5"  # 14:45 UTC (16:45 UTC+2)
 
 permissions:
   contents: read
