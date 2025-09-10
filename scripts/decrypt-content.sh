@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 PASSPHRASE=${MASTER_KEY:-""}
 
 if [ -z "$PASSPHRASE" ]; then
