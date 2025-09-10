@@ -1,33 +1,30 @@
 // src/utils/images.ts
-export const FLOATING_IMAGES = [
-  'aufw2.jpg',
-  'ice.jpg', 
-  'PBH_FACT.gif',
-  'PBH_FOTO.gif',
-  'PBH_HOME.gif',
-  'PBH_NEWS.gif',
-  'titel01c.gif',
-  'screenshot.png',
-  'icon-1.png',
-  'icon-2.png',
-  'icon-3.png',
-  'flyer-1.png',
-  'flyer-2.png',
-  'flyer-3.png',
-  'flyer-4.png',
-  'flyer-5.png',
-  'flyer-6-qrcodes.png'
-];
 
 export async function getFloatingImages() {
-  const modules = await Promise.all(
-    FLOATING_IMAGES.map(async (filename) => {
-      const module = await import(`../assets/${filename}`);
-      return {
-        src: module.default,
-        alt: filename.replace(/\.[^/.]+$/, "") // Remove extension for alt text
-      };
-    })
+  // Use Vite's import.meta.glob to dynamically import all image files
+  const imageModules = import.meta.glob('../assets/*.{png,jpg,jpeg,gif,webp,svg}', { 
+    eager: false 
+  });
+  
+  const images = await Promise.all(
+    Object.entries(imageModules)
+      .filter(([path]) => {
+        // Extract filename and exclude files with "bg" in the name
+        const filename = path.split('/').pop() || '';
+        return !filename.toLowerCase().includes('bg');
+      })
+      .map(async ([path, importFn]) => {
+        const module = await importFn();
+        const filename = path.split('/').pop() || '';
+        const altText = filename.replace(/\.[^/.]+$/, ""); // Remove extension
+        
+        return {
+          src: (module as any).default,
+          alt: altText,
+          filename: filename
+        };
+      })
   );
-  return modules;
+  
+  return images;
 }
