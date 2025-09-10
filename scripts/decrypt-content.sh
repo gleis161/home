@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# set -e
+
 PASSPHRASE=${MASTER_KEY:-""}
 
 if [ -z "$PASSPHRASE" ]; then
@@ -22,7 +24,7 @@ for encrypted_file in content/*.gpg; do
             echo "Successfully decrypted $original_file"
         else
             echo "Failed to decrypt $encrypted_file"
-            exit 1
+            # exit 1
         fi
     fi
 done
