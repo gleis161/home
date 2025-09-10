@@ -1,0 +1,70 @@
+---
+import UpdateCard from './UpdateCard.astro';
+import { readdir, readFile } from 'fs/promises';
+import { join } from 'path';
+
+// Define types for updates
+interface VideoEmbed {
+  type: 'youtube' | 'vimeo' | 'twitch';
+  url: string;
+  title?: string;
+}
+
+interface SocialEmbed {
+  type: 'instagram' | 'telegram' | 'twitter';
+  url: string;
+  username?: string;
+}
+
+interface Update {
+  title: string;
+  date: Date;
+  content: string;
+  priority?: 'high' | 'medium' | 'low';
+  tags?: string[];
+  filename: string;
+  videoEmbed?: VideoEmbed;
+  socialEmbed?: SocialEmbed;
+}
+
+// Fetch updates from JSON files
+let updates: Update[] = [];
+try {
+  const contentPath = join(process.cwd(), 'content');
+  const files = await readdir(contentPath);
+  const jsonFiles = files.filter(file => file.endsWith('.json'));
+  
+  const updatePromises = jsonFiles.map(async (file): Promise<Update> => {
+    const filePath = join(contentPath, file);
+    const content = await readFile(filePath, 'utf-8');
+    const update = JSON.parse(content);
+    return {
+      ...update,
+      filename: file,
+      date: new Date(update.date || new Date())
+    };
+  });
+  
+  updates = await Promise.all(updatePromises);
+  // Sort updates by date, newest first
+  updates.sort((a, b) => b.date.getTime() - a.date.getTime());
+} catch (error) {
+  console.error("Failed to load updates:", error);
+}
+---
+
+{updates.length > 0 && (
+  <div class="relative mb-8">
+    <h1 class="font-cool text-4xl mb-4 text-blue-600! ">
+      !!! updates
+    </h1>
+    <div class="absolute top-0 right-10 w-2 h-8 bg-pink-500 transform rotate-45 animate-bounce"></div>
+  </div>
+  
+  <!-- Render JSON updates -->
+  <div class="mb-8 font-serif grid grid-cols-1 md:grid-cols-2 gap-6">
+    {updates.map((update: Update, index: number) => (
+      <UpdateCard {...update} />
+    ))}
+  </div>
+)}

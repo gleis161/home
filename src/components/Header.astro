@@ -1,0 +1,46 @@
+---
+const baseUrlNoTrailingSlash = import.meta.env.BASE_URL.replace(/\/$/, '');
+const homeUrl = baseUrlNoTrailingSlash || '/';
+
+---
+
+<header class="sticky top-0 backdrop-blur-sm z-20 pb-16 -mb-16 noise">
+
+<h1 class="p-4 text-center text-lg bg-red-600 font-syncro">
+    <a href={homeUrl}>Gleis 161</a>
+</h1>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const worksButton = document.querySelector('.works-dropdown-btn');
+        const dropdown = document.querySelector('.works-dropdown');
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        
+        // Toggle dropdown on WORKS click
+        worksButton?.addEventListener('click', () => {
+            dropdown?.classList.toggle('hidden');
+        });
+        
+        // Handle category button clicks
+        categoryButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const targetElement = e.target as HTMLElement;
+                const category = targetElement.getAttribute('data-category');
+                
+                // Remove active state from all buttons
+                categoryButtons.forEach(b => b.classList.remove('selected'));
+                // Add active state to clicked button
+                targetElement.classList.add('selected');
+                
+                // Dispatch custom event that the index page can listen to
+                window.dispatchEvent(new CustomEvent('categoryWorks', { 
+                    detail: { category } 
+                }));
+                ;
+            });
+        });
+    });
+</script>
+
+
+</header>

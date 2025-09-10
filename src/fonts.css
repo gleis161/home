@@ -1,0 +1,63 @@
+@font-face {
+    font-family: 'SBBWeb';
+    src: url('./assets/fonts/SBBWeb-Roman.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'SBBWeb';
+    src: url('./assets/fonts/SBBWeb-Light.woff2') format('woff2');
+    font-weight: lighter;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'SBBWeb';
+    src: url('./assets/fonts/SBBWeb-Bold.woff2') format('woff2');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'SBBWeb';
+    src: url('./assets/fonts/SBBWeb-Condensed-Heavy.woff2') format('woff2');
+    font-weight: bolder;
+    font-stretch: condensed;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'SBBWeb';
+    src: url('./assets/fonts/SBBWeb-Italic.woff2') format('woff2');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'SuisseIntlMono';
+    src: url('./assets/fonts/SuisseIntlMono-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'SuisseIntlMono';
+    src: url('./assets/fonts/SuisseIntlMono-Bold.otf') format('opentype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'SyncroItalic';
+    src: url('./assets/fonts/SyncroItalic-Desktop.otf') format('opentype');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}

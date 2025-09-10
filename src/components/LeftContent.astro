@@ -1,0 +1,54 @@
+---
+// src/components/MainContent.astro
+import { parseMainContent, parseDonationsContent } from '../utils/content';
+
+// Import content as raw text
+import rawContent from "/content/main.md?raw";
+import donationsContent from "/content/donations.md?raw";
+
+const mainContent = parseMainContent(rawContent);
+const donations = parseDonationsContent(donationsContent);
+---
+
+<div class="left-content">
+  <slot name="updates" />
+
+  <div class="communique-section">
+    <h1 class="font-cool text-4xl mb-4 text-blue-600!">
+      communiqué!
+    </h1>
+    <h1>{mainContent.heading}</h1>
+    
+    <div class="content">
+      {mainContent.content.split('\n')
+        .filter((line) => line.trim() !== "")
+        .map((paragraph) => <p>{paragraph}</p>)
+      }
+    </div>
+
+    <div class="pills">
+      <div class="ending">
+        {mainContent.ending}
+      </div>
+
+      <!-- Vertical label on the right -->
+      <div class="vertical-label">Communiqué</div>
+    </div>
+  </div>
+  
+  <!-- Donations Section -->
+  <div class="donations-section mb-6">
+    <div class="donations-header">
+      <h2>🇵🇸 {donations.title} ✨</h2>
+    </div>
+
+    <div class="donations-grid">
+      {donations.items.map((item) => (
+        <div class="donation-item">
+          <div class="organization">● {item.organization}:</div>
+          <div class="description">{item.description}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>

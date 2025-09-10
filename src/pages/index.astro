@@ -1,0 +1,80 @@
+---
+import Layout from "../layouts/Layout.astro";
+import EventTimeline from "../components/EventTimeline.astro";
+import FloatingImages from "../components/FloatingImages.astro";
+import LeftContent from "../components/LeftContent.astro";
+import UpdatesSection from "../components/UpdatesSection.astro";
+import { getFloatingImages } from "../utils/images.js";
+
+import welcome from "../assets/jingles/welcome.mp3";
+
+// Get floating images dynamically
+const floatingImages = await getFloatingImages();
+---
+
+<Layout title="Gleis 161">
+    <FloatingImages images={floatingImages} />
+
+    <audio loop>
+        <source src={welcome} type="audio/mpeg" />
+        Your browser does not support the audio element.
+    </audio>
+
+    <div class="p-4">
+        <div class="main-content">
+            <LeftContent>
+                <UpdatesSection slot="updates" />
+            </LeftContent>
+
+            <!-- Right Content -->
+            <div class="right-content">
+                <h1 class="font-cool mb-4 lg:text-white">timeline</h1>
+                <EventTimeline />
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const images = document.querySelectorAll(".floating-image");
+
+            // Initialize random positions and animation delays for each image
+            images.forEach((img, index) => {
+                const imgElement = img as HTMLImageElement;
+
+                // Random starting position
+                const startX = Math.random() * window.innerWidth;
+                const startY = Math.random() * window.innerHeight;
+
+                imgElement.style.left = startX + "px";
+                imgElement.style.top = startY + "px";
+                imgElement.addEventListener("click", function () {
+                    if (imgElement.classList.contains("clicked")) {
+                        imgElement.classList.add("clicked-twice");
+                        imgElement.src = "";
+                    } else {
+                        imgElement.classList.add("clicked");
+                    }
+                });
+            });
+            initUserInterac();
+        });
+
+        function initUserInterac() {
+            document.body.classList.add("cursor-help!");
+            const handler = function () {
+                document.body.removeEventListener("click", handler, true);
+                document.body.classList.remove("cursor-help!");
+                document
+                    .getElementsByClassName("cursor-help!")[0]
+                    .classList.remove("cursor-help!");
+                playSound();
+            };
+            document.body.addEventListener("click", handler, true);
+        }
+        function playSound() {
+            const audio = new Audio("/src/assets/jingles/welcome.mp3");
+            audio.play();
+            audio.loop = true;
+        }
+    </script>
+</Layout>

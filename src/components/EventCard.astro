@@ -1,0 +1,129 @@
+---
+import { getEventIcon, getEventBadgeClass } from '../utils/eventIcons';
+
+export interface Props {
+  event: any;
+  showStage?: boolean;
+}
+
+const { event, showStage = false } = Astro.props;
+const IconComponent = getEventIcon(event.details || 'DJ');
+---
+
+<li class="my-1 list-none bg-sbb-light rounded p-4 hover:shadow hover:-translate-y-0.5 relative event-card" data-event-id={event.id}>
+  <div class="py-2">
+    <!-- Top line: Transport icon + event type + title + price -->
+    <div class="flex items-center gap-2 mb-2">
+      <span class="sbb-icon-inner">
+        <IconComponent />
+      </span>
+      
+      <div class={`sbb-heading-4 font-stretch-condensed px-3 pr-4 py-1 rounded w-fit border-1 event-badge ${getEventBadgeClass(event.details || 'DJ')}`}>
+        <span class="scale-130 inline-block">
+          {(() => {
+            const text = event.details || 'DJ';
+            if (text === 'LIVE') {
+              return (
+                <>
+                  <span class="font-bold italic">{text.slice(0, 2)}</span>
+                  <span class="ml-0.15">{text.slice(2)}</span>
+                </>
+              );
+            }
+            if (text.length < 4) 
+              return (<span class="font-bold italic tracking-widest">{text}</span>);
+            if (text.length > 5) 
+              return (<span class="font-bold italic tracking-tighter">{text}</span>);
+              
+            return <span class="font-bold italic">{text}</span>;
+          })()}
+        </span>
+      </div>
+      
+      <span class="text-sm font-syncro flex-1">
+        {Math.random() < 0.7 ? 
+        (event.link ? (
+          <a href={event.link} target="_blank" rel="noopener noreferrer">
+            {event.title}
+          </a>
+        ) : (
+          event.title
+        ))
+          :
+        (event.link ? (
+          <a href={event.link} target="_blank" rel="noopener noreferrer">
+            {event.title.split('').map((char: string) => (
+              <em class="fire">{char === ' ' ? '\u00A0' : char}</em>
+            ))}
+          </a>
+        ) : (
+          event.title.split('').map((char: string) => (
+            <em class="fire">{char === ' ' ? '\u00A0' : char}</em>
+          ))
+        ))
+        }
+      </span>
+      
+      {showStage && (
+        <div class="price text-xs px-2 py-0.5 rounded absolute right-0 top-0 border-gray-300 border-b flex items-center gap-2">
+          <span class="font-bold">{event.location}</span>
+        </div>
+      )}
+      
+      {!showStage && event.link && (
+        <div class="price text-xs px-2 py-0.5 rounded absolute right-0 top-0 border-gray-300 border-b pointer-events-none hover:scale-120">
+          <a href={event.link} target="_blank" class="pointer-events-auto  ">link ...</a>
+        </div>
+      )}
+    </div>
+    
+    <!-- Timeline: time + dots + time -->
+    <div class="flex items-center mb-2">
+      <time class="w-12">
+        {event.date.toLocaleTimeString('de-CH', { hour: '2-digit', minute: '2-digit' })}
+      </time>
+      
+      <div class="flex-1 flex items-center mx-3">
+        <div class="w-2 h-2 bg-black rounded-full"></div>
+        <div class="flex-1 h-0.5 bg-black relative">
+          <!-- Intermediate stations (outline dots) -->
+          {Array.from({length: Math.floor(Math.random() * 4)}).map((_, i) => (
+            <div 
+              class="absolute w-2 h-2 border border-black bg-white rounded-full -top-0.75" 
+              style={`left: ${Math.random()*(i+1)*(100-(i+1)*25)}%`}>
+            </div>
+          ))}
+          <!-- Current train position based on real time -->
+          {event.trainPosition && (
+            <div 
+              class="absolute w-2 h-2 bg-red-600 rounded-full -top-0.75" 
+              style={`left: ${event.trainPosition}%`}>
+            </div>
+          )}
+        </div>
+        <div class="w-2 h-2 bg-black rounded-full"></div>
+      </div>
+      
+      <time class="w-12 text-right">
+        {event.arrivalTime.toLocaleTimeString('de-CH', { hour: '2-digit', minute: '2-digit' })}
+      </time>
+    </div>
+    
+    <!-- Bottom line: platform + occupancy + duration -->
+    <div class="flex items-center justify-between text-xs font-light">
+      <div class="flex items-center gap-3">
+        <span>St. 13</span>
+      </div>
+      <span class="font-normal">{event.duration}</span>
+    </div>
+    
+    <!-- Event content -->
+    {event.content && (
+      <div class="mt-2 pt-2 border-t border-gray-300 border-opacity-30">
+        <p class="text-xs font-light tracking-tight">
+          {event.content}
+        </p>
+      </div>
+    )}
+  </div>
+</li>

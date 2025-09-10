@@ -1,0 +1,103 @@
+---
+import EventCard from './EventCard.astro';
+import eventsData from '../../content/events.ts';
+import { enhanceEvents, groupEventsByDayAndHour, type ProcessedEvent } from '../utils/events';
+
+// Process events
+let processedEvents: ProcessedEvent[] = [];
+try {
+  processedEvents = eventsData.map((event: any) => {
+    const eventDate = new Date(event.date);
+    const eventEndDate = event.endDate ? new Date(event.endDate) : null;
+    return {
+      title: event.title,
+      date: eventDate,
+      endDate: eventEndDate,
+      location: event.location || '',
+      link: event.link || '',
+      details: event.details || '',
+      content: event.content || '',
+    };
+  });
+} catch (error) {
+  console.error("Error processing events:", error);
+  processedEvents = [];
+}
+
+// Sort events by date
+processedEvents.sort((a, b) => a.date.getTime() - b.date.getTime());
+
+// Create location-specific sorted lists and enhance them
+const wagenbuhneEvents = processedEvents.filter(e => e.location === 'WAGENBÜHNE').sort((a, b) => a.date.getTime() - b.date.getTime());
+const ahklangEvents = processedEvents.filter(e => e.location === 'AHKLANG + FILM CLUB').sort((a, b) => a.date.getTime() - b.date.getTime());
+const kpktEvents = processedEvents.filter(e => e.location === 'KPKT').sort((a, b) => a.date.getTime() - b.date.getTime());
+
+const enhancedWagenbuhneEvents = enhanceEvents(wagenbuhneEvents, 'WAGENBÜHNE');
+const enhancedAhklangEvents = enhanceEvents(ahklangEvents, 'AHKLANG + FILM CLUB');
+const enhancedKpktEvents = enhanceEvents(kpktEvents, 'KPKT');
+
+// Group events by day and hour
+const dayGroupsArray = groupEventsByDayAndHour([...enhancedWagenbuhneEvents, ...enhancedAhklangEvents, ...enhancedKpktEvents]);
+
+---
+
+<main class="day-group md:mx-8" >
+  <!-- Events grouped by day -->
+  {dayGroupsArray.map((dayGroup: any) => (
+    <div class="p-4 md:p-8 rounded bg-sbb">
+      <!-- Day header spanning all stages -->
+      <div class="sticky top-16 lg:top-24 z-10 text-center py-2">
+        <h3>
+          {dayGroup.date.toLocaleDateString('en-CH', { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+          })}
+        </h3>
+      </div>
+
+      <!-- Events grouped by hour -->
+      {dayGroup.hourlyGroups && dayGroup.hourlyGroups.map((hourGroup: any) => (
+        <div class="hour-group">
+
+          <!-- Dynamic location headers for desktop only -->
+          {hourGroup.showHeaders && (
+            <div class={`hidden lg:grid gap-4 md:gap-8 mb-6 sticky top-16 z-10 py-2 lg:grid-cols-${hourGroup.columnCount}`}>
+              {hourGroup.activeVenues.map((venue: any) => (
+                <div class="text-center">
+                  <h5>{venue.name}</h5>
+                </div>
+              ))}
+            </div>
+          )}
+          
+          <!-- Unified event display -->
+          <div class={`grid grid-cols-1 gap-4 md:gap-8 lg:grid-cols-${hourGroup.columnCount}`}>
+            {/* Mobile layout: single column with all events mixed */}
+            <div class="lg:hidden col-span-full">
+              <ul>
+                {[...hourGroup.wagenbuhne, ...hourGroup.ahklang, ...hourGroup.kpkt]
+                  .sort((a: any, b: any) => a.date.getTime() - b.date.getTime())
+                  .map((event: any) => (
+                    <EventCard event={event} showStage={true} />
+                  ))}
+              </ul>
+            </div>
+
+            {/* Desktop layout: separate venue columns */}
+            {hourGroup.activeVenues.map((venue: any) => (
+              <div class="hidden lg:block">
+                <ul>
+                  {venue.events.map((event: any) => (
+                    <EventCard event={event} />
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  ))}
+</main>

@@ -1,0 +1,45 @@
+---
+import '../fonts.css'
+import '../styles.css'
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro';
+
+// capitalize the first letter of every word in a string
+function capitalize(s: string): string {
+    return s.split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+}
+
+
+const title = capitalize(`${Astro.props.title ? `${Astro.props.title}` : 'GLEIS 161'}`);
+
+const baseUrlNoTrailingSlash = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="author" content="u wish enterprises">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <meta name="revisit-after" content="1 days">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <meta property="og:title" content={title}>
+        <meta property="og:image:alt" content={title}>
+        <meta property="og:description" content={title}>
+        <meta name="description" content={title}>
+
+        <link rel="apple-touch-icon" sizes="180x180" href=`${baseUrlNoTrailingSlash}/apple-touch-icon.png`>
+        <link rel="icon" type="image/png" sizes="32x32" href=`${baseUrlNoTrailingSlash}/favicon-32x32.png`>
+        <link rel="icon" type="image/png" sizes="16x16" href=`${baseUrlNoTrailingSlash}/favicon-16x16.png`>
+        <link rel="manifest" href=`${baseUrlNoTrailingSlash}/site.webmanifest`>
+        
+        <meta name="generator" content={Astro.generator} />
+        <title>{title}</title>
+    </head>
+    <body class="font-bold">
+        <Header />
+        <slot />
+        <Footer />
+    </body>
+</html>

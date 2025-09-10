@@ -1,0 +1,61 @@
+---
+import SBBUhr from "./SBBUhr.astro";
+---
+
+<footer class="bg-sbb-light w-full pt-12 pb-6 px-4 text-charcoal text-sm">
+  <h1 class="sr-only">Fusszeile</h1>
+  <div class="max-w-7xl mx-auto">
+    <!-- First row on mobile (2 columns), expanded on larger screens -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+      <div>
+        <h2 class="font-bold text-lg mb-2">Hilfe &amp; Kontakt.</h2>
+        <ul class="space-y-1 mb-4">
+          <li><a href="https://www.sbb.ch/de/hilfe-und-kontakt/erstattung-entschaedigung/rueckerstattung.html" class="hover:underline">Rückerstattungen und Entschädigungen</a></li>
+          <li><a href="https://www.sbb.ch/de/hilfe-und-kontakt/fundbuero.html" class="hover:underline">Fundbüro</a></li>
+          <li><a href="https://www.sbb.ch/de/hilfe-und-kontakt/produkte-services/swisspass-karte.html" class="hover:underline">SwissPass</a></li>
+          <li><a href="https://www.sbb.ch/de/hilfe-und-kontakt/meine-abos.html" class="hover:underline">Meine Abos</a></li>
+          <li><a href="https://www.sbb.ch/de/hilfe-und-kontakt/meine-billette.html" class="hover:underline">Meine Billette</a></li>
+        </ul>
+        <a href="https://www.sbb.ch/de/hilfe-und-kontakt.html" class="inline-block bg-[#eb0000] text-white font-bold rounded-full px-6 py-2 shadow-md">Alle Hilfe-Themen</a>
+      </div>
+      
+      <div>
+        <h2 class="font-bold text-lg mb-2">Mehr SBB.</h2>
+        <ul class="space-y-1">
+          <li><a href="https://company.sbb.ch/de/jobs-karriere.html" class="hover:underline">Jobs &amp; Karriere</a></li>
+          <li><a href="https://business.sbb.ch/de" class="hover:underline">Geschäftskunden</a></li>
+          <li><a href="https://company.sbb.ch/de/home.html" class="hover:underline">Unternehmen</a></li>
+          <li><a href="https://news.sbb.ch" class="hover:underline">SBB News</a></li>
+          <li><a href="https://community.sbb.ch/de" class="hover:underline">SBB Community</a></li>
+        </ul>
+      </div>
+      
+      <!-- Second row on mobile (Newsletter and Clock side by side) -->
+      <div class="col-span-2 lg:col-span-1 grid grid-cols-2 lg:grid-cols-1 gap-8 lg:gap-0">
+        <div>
+          <h2 class="font-bold text-lg mb-2">Newsletter.</h2>
+          <p class="text-sm text-[#686868] mb-3">Jeden Monat Infos und Angebote rund um die SBB.</p>
+          <a href="https://www.sbb.ch/de/meta/newsletter/anmeldungen/sbb-anmeldung.html" class="inline-block border border-[#d2d2d2] rounded-full px-6 py-2 bg-white font-bold shadow-sm">Gleich abonnieren</a>
+        </div>
+        
+        <div class="flex justify-center lg:justify-end items-start lg:mt-0">
+          <SBBUhr />
+        </div>
+      </div>
+      
+      <!-- Clock on larger screens (separate column) -->
+      <div class="hidden lg:flex justify-end items-start">
+        <SBBUhr />
+      </div>
+    </div>
+  </div>
+  
+  <hr class="my-8 border-[#e5e5e5]" />
+  <div class="max-w-7xl mx-auto flex flex-wrap gap-4 justify-center text-xs text-[#686868]">
+    <a href="https://www.sbb.ch/de/meta/legallines/impressum.html" class="hover:underline">Impressum</a>
+    <a href="https://www.sbb.ch/de/meta/legallines/rechtlicher-hinweis.html" class="hover:underline">Rechtlicher Hinweis</a>
+    <a href="https://www.sbb.ch/de/meta/legallines/datenschutz.html" class="hover:underline">Datenschutz</a>
+    <a href="https://www.sbb.ch/de/meta/legallines/barrierefreiheit.html" class="hover:underline">Barrierefreiheit</a>
+    <button id="ot-sdk-btn" class="hover:underline bg-transparent border-none p-0 cursor-pointer">Cookie-Einstellungen</button>
+  </div>
+</footer>

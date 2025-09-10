@@ -1,0 +1,40 @@
+---
+// src/components/FloatingImages.astro
+export interface Props {
+  images: Array<{src: {src: string}, alt: string}>;
+}
+
+const { images } = Astro.props;
+---
+
+<div class="floating-images-container cursor-help!">
+  {images.map((image, index) => (
+    <img
+      src={image.src.src}
+      alt={`Floating ${image.alt}`}
+      class="floating-image"
+      data-index={index}
+    />
+  ))}
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const images = document.querySelectorAll(".floating-image");
+    
+    images.forEach((img, index) => {
+      const imgElement = img as HTMLImageElement;
+      
+      // Random initial position
+      const x = Math.random() * 80 + 10; // 10% to 90%
+      const y = Math.random() * 80 + 10;
+      
+      imgElement.style.left = `${x}%`;
+      imgElement.style.top = `${y}%`;
+      
+      // Random animation delay
+      const delay = Math.random() * 10;
+      imgElement.style.animationDelay = `${delay}s`;
+    });
+  });
+</script>

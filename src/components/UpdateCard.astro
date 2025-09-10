@@ -1,0 +1,189 @@
+---
+// Define types for the component props
+interface VideoEmbed {
+  type: 'youtube' | 'vimeo' | 'twitch';
+  url: string;
+  title?: string;
+}
+
+interface SocialEmbed {
+  type: 'instagram' | 'telegram' | 'twitter';
+  url: string;
+  username?: string;
+}
+
+interface UpdateProps {
+  title: string;
+  date: Date;
+  content: string;
+  priority?: 'high' | 'medium' | 'low';
+  tags?: string[];
+  videoEmbed?: VideoEmbed;
+  socialEmbed?: SocialEmbed;
+}
+
+const { title, date, content, priority, tags, videoEmbed, socialEmbed } = Astro.props as UpdateProps;
+
+// Helper functions for video embeds
+function extractVideoId(url: string, type: string): string | null {
+  try {
+    if (type === 'youtube') {
+      const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/);
+      return match ? match[1] : null;
+    } else if (type === 'vimeo') {
+      const match = url.match(/vimeo\.com\/(\d+)/);
+      return match ? match[1] : null;
+    } else if (type === 'twitch') {
+      const match = url.match(/twitch\.tv\/videos\/(\d+)/);
+      return match ? match[1] : null;
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+function getEmbedUrl(videoEmbed: VideoEmbed): string | null {
+  const videoId = extractVideoId(videoEmbed.url, videoEmbed.type);
+  if (!videoId) return null;
+
+  switch (videoEmbed.type) {
+    case 'youtube':
+      return `https://www.youtube.com/embed/${videoId}`;
+    case 'vimeo':
+      return `https://player.vimeo.com/video/${videoId}`;
+    case 'twitch':
+      return `https://player.twitch.tv/?video=${videoId}&parent=${typeof window !== 'undefined' ? window.location.hostname : 'localhost'}`;
+    default:
+      return null;
+  }
+}
+---
+
+<div class="update-card relative p-4 shadow-lg font-mono">
+  
+  <div class="relative z-10">
+    {/* Priority stamp for high priority */}
+    {priority === 'high' && (
+      <div class="absolute top-2 right-2 bg-red-600 text-white text-xs px-2 py-1 font-bold uppercase transform rotate-12 z-20">
+        URGENT
+      </div>
+    )}
+    
+    <div class="mb-4">
+      <div class="text-lg font-bold mb-1 tracking-wide">
+        ZÜRCHER VERKEHRSVERBUND
+      </div>
+      <div class="text-xs -mb-1 w-fit">
+        GÜLTIG BIS {new Date(date.getTime() + 24*60*60*1000).toLocaleDateString('de-CH').replace(/\./g, '.')}
+        <div class="text-xs mb-3 text-right">
+          UM {new Date(date.getTime() + 24*60*60*1000).toLocaleTimeString('de-CH', { hour: '2-digit', minute: '2-digit' })} UHR
+        </div>
+      </div>
+      
+      <div class="text-sm font-bold mb-1">
+        EINZELTICKET
+      </div>
+      <div class="text-xs mb-4">
+        ZONEN 10
+      </div>
+      
+      {priority && priority !== 'high' && (
+        <div class="mb-2">
+          {priority === 'medium' && (
+            <span class="bg-yellow-300 text-xs px-1 py-0.5 uppercase">ALERT</span>
+          )}
+          {priority === 'low' && (
+            <span class="bg-blue-300 text-xs px-1 py-0.5 uppercase">INFO</span>
+          )}
+        </div>
+      )}
+    </div>
+    
+    <div class="mb-6">
+      <div class="text-sm font-syncro font-bold mb-2">
+        {title.toUpperCase()}
+      </div>
+      <p class="text-xs font-syncro font-light leading-tight">
+        {content}
+      </p>
+    </div>
+
+    {/* Video embed */}
+    {videoEmbed && (
+      <div class="mb-3">
+        <div class="relative border-dashed border-gray-400 p-2">
+          {videoEmbed.type && (
+            <div class="absolute -top-1 -right-1 bg-red-600 text-white text-xs px-1 py-0.5 uppercase">
+              {videoEmbed.type}
+            </div>
+          )}
+          {getEmbedUrl(videoEmbed) ? (
+            <iframe
+              src={getEmbedUrl(videoEmbed)}
+              title={videoEmbed.title || "Video"}
+              class="w-full h-32"
+              frameborder="0"
+              allowfullscreen
+            ></iframe>
+          ) : (
+            <div class="w-full h-32 bg-orange-200 flex items-center justify-center" style="background-color: #ede5d3;">
+              <p class="text-center text-xs">
+                VIDEO UNAVAILABLE
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+    )}
+
+    {/* Social embed */}
+    {socialEmbed && (
+      <div class="mb-3">
+        <div class="border-dashed border-gray-400 p-2" >
+          {socialEmbed.type && (
+            <div class="text-xs uppercase mb-1">
+              {socialEmbed.type}
+            </div>
+          )}
+          <p class="text-xs">
+            {socialEmbed.username && `${socialEmbed.username}: `}
+            <a href={socialEmbed.url} target="_blank" class="underline">
+              VIEW POST
+            </a>
+          </p>
+        </div>
+      </div>
+    )}
+    
+    <div class="mt-6">
+      {tags && (
+        <div class="mb-4">
+          {tags.map((tag: string) => (
+            <span class="border-dashed border-px-2 py-1 mr-1 text-xs font-light">
+              #{tag}
+            </span>
+          ))}
+        </div>
+      )}
+      
+      <div class="text-sm font-bold mb-2">
+        2. <span class="text-xs font-light font-mono">KL.</span> ERMÄSSIGT
+      </div>
+      
+      <div class="flex justify-between items-start">
+        <div class="text-xs font-extralight font-mono">
+          <div>{Math.floor(Math.random() * 10000).toString().padStart(4, '0')} {Math.floor(Math.random() * 100000).toString().padStart(5, '0')} {Math.floor(Math.random() * 100000000).toString().padStart(8, '0')}</div>
+          <div>{Math.floor(Math.random() * 100000).toString().padStart(5, '0')} INKL.08.00%MWST/{Math.floor(Math.random() * 1000000).toString().padStart(6, '0')} VBZ</div>
+        </div>
+        
+        <div class="text-right">
+          <div class="text-sm font-normal">
+            CHF {(Math.floor(Math.random() * 20 + 1) + Math.ceil(Math.random()*100 / 5) / 20 ).toFixed(2)}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
