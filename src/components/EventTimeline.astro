@@ -43,6 +43,9 @@ const dayGroupsArray = groupEventsByDayAndHour([...enhancedWagenbuhneEvents, ...
 
 <main class="day-group md:mx-8" >
   <!-- Events grouped by day -->
+   {!dayGroupsArray || dayGroupsArray.length === 0 ? (
+     <p>please check back soon! xoxo</p>
+   ) : ''}
   {dayGroupsArray.map((dayGroup: any) => (
     <div class="p-4 md:p-8 rounded bg-sbb">
       <!-- Day header spanning all stages -->
