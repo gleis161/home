@@ -33,13 +33,13 @@ const floatingImages = await getFloatingImages();
             </div>
         </div>
     </div>
-    <script>
+    <script define:vars={{ welcomeAudio: welcome }}>
         document.addEventListener("DOMContentLoaded", function () {
             const images = document.querySelectorAll(".floating-image");
 
             // Initialize random positions and animation delays for each image
             images.forEach((img, index) => {
-                const imgElement = img as HTMLImageElement;
+                const imgElement = img;
 
                 // Random starting position
                 const startX = Math.random() * window.innerWidth;
@@ -72,7 +72,7 @@ const floatingImages = await getFloatingImages();
             document.body.addEventListener("click", handler, true);
         }
         function playSound() {
-            const audio = new Audio("/src/assets/jingles/welcome.mp3");
+            const audio = new Audio(welcomeAudio);
             audio.play();
             audio.loop = true;
         }
