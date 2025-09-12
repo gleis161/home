@@ -15,7 +15,7 @@ const floatingImages = await getFloatingImages();
 <Layout title="Gleis 161">
     <FloatingImages images={floatingImages} />
 
-    <audio loop>
+    <audio id="welcome-audio" class="hidden">
         <source src={welcome} type="audio/mpeg" />
         Your browser does not support the audio element.
     </audio>
@@ -54,6 +54,8 @@ const floatingImages = await getFloatingImages();
                     } else {
                         imgElement.classList.add("clicked");
                     }
+                    // Play audio on image click (restart if not playing)
+                    playSound();
                 });
             });
             initUserInterac();
@@ -72,9 +74,14 @@ const floatingImages = await getFloatingImages();
             document.body.addEventListener("click", handler, true);
         }
         function playSound() {
-            const audio = new Audio(welcomeAudio);
-            audio.play();
-            audio.loop = true;
+            const audio = document.getElementById("welcome-audio");
+            if (audio) {
+                // If audio is not currently playing, restart it from beginning
+                if (audio.paused || audio.ended) {
+                    audio.currentTime = 0;
+                    audio.play();
+                }
+            }
         }
     </script>
 </Layout>
