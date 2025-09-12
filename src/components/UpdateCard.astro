@@ -63,10 +63,12 @@ function getEmbedUrl(videoEmbed: VideoEmbed): string | null {
 <div class="update-card relative p-4 shadow-lg font-mono">
   
   <div class="relative z-10">
-    {/* Priority stamp for high priority */}
-    {priority === 'high' && (
-      <div class="absolute top-2 right-2 bg-red-600 text-white text-xs px-2 py-1 font-bold uppercase transform rotate-12 z-20">
-        URGENT
+    {/* Priority stamp - always show in top-right corner */}
+    {priority && (
+      <div class={`priority-tag ${priority}`}>
+        {priority === 'high' ? 'URGENT' :
+         priority === 'medium' ? 'ALERT' :
+         'INFO'}
       </div>
     )}
     
@@ -87,17 +89,7 @@ function getEmbedUrl(videoEmbed: VideoEmbed): string | null {
       <div class="text-xs mb-4">
         ZONEN 10
       </div>
-      
-      {priority && priority !== 'high' && (
-        <div class="mb-2">
-          {priority === 'medium' && (
-            <span class="bg-yellow-300 text-xs px-1 py-0.5 uppercase">ALERT</span>
-          )}
-          {priority === 'low' && (
-            <span class="bg-blue-300 text-xs px-1 py-0.5 uppercase">INFO</span>
-          )}
-        </div>
-      )}
+
     </div>
     
     <div class="mb-6">

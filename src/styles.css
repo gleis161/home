@@ -27,6 +27,58 @@
     font-family: 'SyncroItalic', Times, serif;
 }
 
+/* Hide scrollbar for Chr.update-card {
+    background: url('/src/assets/zvv-pattern.png') repeat-y, #f0e6e0;
+}
+
+/* Priority Tag Styles */
+.priority-tag {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    color: white;
+    font-size: 0.75rem;
+    padding: 0.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    transform: rotate(12deg);
+    z-index: 20;
+}
+
+.priority-tag.high {
+    background-color: #dc2626;
+    animation: pulsate 2s ease-in-out infinite;
+}
+
+.priority-tag.medium {
+    background-color: #eab308;
+    animation: spin-gentle 16s linear infinite;
+}
+
+.priority-tag.low {
+    background-color: #2563eb;
+    animation: spin-gentle 32s linear infinite;
+}
+
+/* Priority Animations */
+@keyframes pulsate {
+    0%, 100% {
+        transform: rotate(12deg) scale(1);
+    }
+    50% {
+        transform: rotate(-8deg) scale(1.8);
+    }
+}
+
+@keyframes spin-gentle {
+    0% {
+        transform: rotate(12deg);
+    }
+    100% {
+        transform: rotate(372deg);
+    }
+}
+
 /* Hide scrollbar for Chrome, Safari and Opera */
 html::-webkit-scrollbar {
     display: none;
