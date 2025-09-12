@@ -27,8 +27,15 @@
     font-family: 'SyncroItalic', Times, serif;
 }
 
-/* Hide scrollbar for Chr.update-card {
+.update-card {
     background: url('/src/assets/zvv-pattern.png') repeat-y, #f0e6e0;
+}
+
+.update-content a {
+    text-decoration: underline;
+    font-family: 'SuisseIntlMono', monospace;
+    font-style: normal;
+    color: var(--c-highlight);
 }
 
 /* Priority Tag Styles */

@@ -96,8 +96,8 @@ function getEmbedUrl(videoEmbed: VideoEmbed): string | null {
       <div class="text-sm font-syncro font-bold mb-2">
         {title.toUpperCase()}
       </div>
-      <p class="text-xs font-syncro font-light leading-tight">
-        {content}
+      <p class="update-content text-xs font-syncro font-light leading-tight" set:html={content}>
+        
       </p>
     </div>
 
@@ -141,7 +141,7 @@ function getEmbedUrl(videoEmbed: VideoEmbed): string | null {
           <p class="text-xs">
             {socialEmbed.username && `${socialEmbed.username}: `}
             <a href={socialEmbed.url} target="_blank" class="underline">
-              VIEW POST
+              VIEW POST(s)
             </a>
           </p>
         </div>
