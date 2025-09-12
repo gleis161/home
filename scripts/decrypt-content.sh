@@ -31,4 +31,6 @@ for encrypted_file in content/*.gpg; do
     fi
 done
 
+rm -f tempfile.tmp
+
 echo "Decryption complete!"
