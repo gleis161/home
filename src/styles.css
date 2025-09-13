@@ -157,8 +157,16 @@ html {
         border-radius: 0.5rem;
         font-size: 0.875rem;
         line-height: 1.625;
-        padding: 0 1rem;
+        padding: 0 1.2rem;
+        text-align: justify;
+        /* natural english word breaking */
+        word-break: normal;
+        overflow-wrap: break-word;
 
+        @media screen and (max-width: 640px) {
+            padding: 0 1.2rem 2rem 1.2rem ;
+            
+        }
         & p {
             margin-bottom: 1rem;
         }
@@ -174,9 +182,8 @@ html {
         padding: 0.75rem 2rem;
 
         position: absolute;
-        bottom: 45px;
         left: 50%;
-        transform: translateX(-50%);
+        transform: translate(-50%, -50%);
     }
 
     & .vertical-label {
@@ -191,7 +198,7 @@ html {
         position: absolute;
         right: -45px;
         top: 50%;
-        transform: translateY(-50%) rotate(270deg);
+        transform: rotate(270deg);
     }
 }
 
@@ -221,7 +228,9 @@ html {
         grid-template-columns: 1fr 1fr;
         gap: 1.5rem;
         font-family: 'SuisseIntlMono', monospace;
-        
+        @media screen and (max-width: 640px) {
+            grid-template-columns: 1fr;
+        }
         & .donation-item {
             & .organization {
                 color: #22c55e;
