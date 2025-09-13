@@ -15,12 +15,6 @@ This project uses encrypted content files that are decrypted during the GitHub A
    ```bash
    ./scripts/decrypt-content.sh
    ```
-
-2. **Start development server:**
-   ```bash
-   pnpm dev
-   ```
-
 ## Content Management
 
 ### Encrypting New Content Files
@@ -28,11 +22,6 @@ This project uses encrypted content files that are decrypted during the GitHub A
 When you have new sensitive content to add:
 
 1. **Commit only the encrypted files:**
-   ```bash
-   git add content/*.gpg
-   git commit -m "Add encrypted content"
-   git push
-   ```
 
 ## Project Structure
 
